@@ -73,7 +73,7 @@
         <select id="trait">
             <option value="weightedValue">Overall Score</option>
             <option value="transit_index">Transit/Accessibility</option>
-            <option value="restaurant_index">Restaurants</option>
+            <option value="restaurant_index">Restaurant Safety</option>
             <option value="health_index">Health</option>
             <option value="housing_index">Housing</option>
             <option value="crime_index">Crime</option>
@@ -192,7 +192,7 @@
                    Neighboorhood: ${csvRow.NTAName}<br>
                    Overall Score: ${parseFloat(csvRow.weightedValue).toFixed(2)}<br>
                    Transit/Accessibility: ${parseFloat(100 * csvRow.transit_index).toFixed(2)}<br>
-                   Restaurants: ${parseFloat(100 * csvRow.restaurant_index).toFixed(2)}<br>
+                   Restaurant Safety: ${parseFloat(100 * csvRow.restaurant_index).toFixed(2)}<br>
                    Health: ${parseFloat(100 * csvRow.health_index).toFixed(2)}<br>
                    Housing: ${parseFloat(100 * csvRow.housing_index).toFixed(2)}<br>
                    Crime: ${parseFloat(100 * csvRow.crime_index).toFixed(2)}<br>
