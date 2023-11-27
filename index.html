@@ -178,8 +178,11 @@
             svg.call(zoom);
 
             d3.selectAll("input[type=range]").on("input", function (d) {
-                updateMap(d);
-                updateTopTenList(d);
+                const trait = document.getElementById("trait").value;
+                if (trait === "weightedValue") {
+                    updateMap(d);
+                    updateTopTenList(d);
+                }
             });
 
             function updateMap() {
