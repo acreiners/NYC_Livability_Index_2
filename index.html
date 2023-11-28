@@ -16,8 +16,25 @@
             text-align: center;
         }
 
+        #container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between; 
+            margin: 10px;
+        }
+
+        #left {
+            display: flex;
+            flex-direction: column;
+            flex: 1; 
+        }
+
         #map {
-            margin: auto;
+            margin-bottom: 10px; 
+        }
+
+        #legend {
+            margin-top: 10px;
         }
 
         .tract {
@@ -25,7 +42,8 @@
         }
 
         #topTenList {
-            margin-top: 20px;
+            flex: 1;
+            margin: 10px;
         }
 
         #regionSelector {
@@ -49,11 +67,11 @@
     <h2> Instructions </h2>
     <p> Each trait can be adjusted in weight on a scale from 0 to 100. </p>
     <p> Select Borough: Select one borough in the city or all the boroughs to see their overall score or trait value.</p>
-    <p> Select Trait: Overall Score (calculated based on traits and weights applied to them) or one of the five traits. </p>
+    <p> Select Trait: Overall Score (calculated based on trait values and weights applied to them) or one of the five traits. </p>
     <div id="controls">
         <h2>Trait Importance</h2>
         <label>Transit/Accessibility <input type="range" id="transit_index" min="0" max="1" step="0.01"></label>
-        <label>Restaurant Safety<input type="range" id="restaurant_index" min="0" max="1" step="0.01"></label>
+        <label>Restaurants <input type="range" id="restaurant_index" min="0" max="1" step="0.01"></label>
         <label>Health <input type="range" id="health_index" min="0" max="1" step="0.01"></label>
         <label>Housing <input type="range" id="housing_index" min="0" max="1" step="0.01"></label>
         <label>Crime <input type="range" id="crime_index" min="0" max="1" step="0.01"></label>
@@ -73,18 +91,29 @@
         <select id="trait">
             <option value="weightedValue">Overall Score</option>
             <option value="transit_index">Transit/Accessibility</option>
-            <option value="restaurant_index">Restaurant Safety</option>
+            <option value="restaurant_index">Restaurants</option>
             <option value="health_index">Health</option>
             <option value="housing_index">Housing</option>
             <option value="crime_index">Crime</option>
         </select>
     </div>
-    <div id="map"></div>
-    <div id="legend"></div>
-    <div id="topTenList"></div>
+    <div id="container">
+        <div id="left">
+            <div id="map"></div>
+            <div id="legend"></div>
+        </div>
+        <div id="topTenList"></div>
+    </div>
     <div id="tooltip"></div>
 
-    <p> Notes: Each value for each trait in a census tract is based on a calculated value from numerous data sources. </p>
+    <h3> Trait Weighting Process </h3>
+    <p> The value for each trait was calculated using data and assigned weights.
+    Factors included in each trait is listed below. </p>
+    <p> Transit: Subway Stations, Covered Bus Stops, and Public Bicycle Parking </p>
+    <p> Restaurant Safety: Number of Restaurants, Violations, Closures, Health Grade </p>
+    <p> Crime: Felonies, Misdemeanors, Violations </p>
+    <p> Health: Influenza/Pneumonia Admissions, EMS Incidents, Water Inspections, Rodent Inspections </p>
+    <p> Housing: Average Rent Prices, Housing Violations </p>
     <h3> Data Sources: </h3>
     <p> New York City Open Data 2011. NYC Health + Hospitals Patient Care Locations (2011). New York City Open Data. 
     <a href = "https://data.cityofnewyork.us/Health/NYC-Health-Hospitals-patient-care-locations-2011/f7b6-v6v3/data"> Link </a> </p>
@@ -135,8 +164,8 @@
         }
 
         async function loadData() {
-            const geojsonData = await d3.json("Data/nyc_geojson.json");
-            const csvData = await d3.csv("Data/final_index.csv");
+            const geojsonData = await d3.json("nyc_geojson.json");
+            const csvData = await d3.csv("Test_Files/Final/final_index.csv");
 
             csvData.forEach(csvRow => {
                 const geoJsonFeature = geojsonData.features.find(feature => feature.properties.GEOID === csvRow.census_tract_geoid);
@@ -168,7 +197,9 @@
 
             const path = d3.geoPath().projection(projection);
 
-            const colorScale = d3.scaleSequential(d3.interpolateViridis);
+            const colorScale = d3.scaleThreshold()
+                            .domain([0, 0.2, 0.4, 0.6, 0.8])
+                              .range(['#0072b2', '#e69f00', '#56b4e9', '#009e73', '#f0e442'])
 
             const tracts = svg.selectAll("path")
                 .data(geojsonData.features)
@@ -192,7 +223,7 @@
                    Neighboorhood: ${csvRow.NTAName}<br>
                    Overall Score: ${parseFloat(csvRow.weightedValue).toFixed(2)}<br>
                    Transit/Accessibility: ${parseFloat(100 * csvRow.transit_index).toFixed(2)}<br>
-                   Restaurant Safety: ${parseFloat(100 * csvRow.restaurant_index).toFixed(2)}<br>
+                   Restaurants: ${parseFloat(100 * csvRow.restaurant_index).toFixed(2)}<br>
                    Health: ${parseFloat(100 * csvRow.health_index).toFixed(2)}<br>
                    Housing: ${parseFloat(100 * csvRow.housing_index).toFixed(2)}<br>
                    Crime: ${parseFloat(100 * csvRow.crime_index).toFixed(2)}<br>
@@ -285,38 +316,25 @@
                 .append("svg")
                 .attr("class", "legend")
                 .attr("width", 500)
-                .attr("height", 100)
+                .attr("height", 60) 
                 .append("g")
-                .attr("transform", "translate(5,20)");
+                .attr("transform", "translate(5,10)");
 
-            const defs = legend.append("defs");
-            const linearGradient = defs.append("linearGradient")
-                .attr("id", "linear-gradient")
-                .attr("x1", "0%")
-                .attr("y1", "0%")
-                .attr("x2", "100%")
-                .attr("y2", "0%");
-
-            linearGradient.append("stop")
-                .attr("offset", "0%")
-                .style("stop-color", colorScale(0));
-
-            linearGradient.append("stop")
-                .attr("offset", "100%")
-                .style("stop-color", colorScale(1));
-
-            legend.append("rect")
-                .attr("width", 400)
+            const legendBlocks = legend.selectAll("rect")
+                .data(colorScale.range())
+                .enter().append("rect")
+                .attr("x", (d, i) => i * 100) 
+                .attr("width", 100) 
                 .attr("height", 20)
-                .style("fill", "url(#linear-gradient)");
+                .style("fill", d => d);
 
-            const legendAxis = d3.axisBottom()
-                .scale(d3.scaleLinear().range([0, 400]).domain([0, 100])); 
-
-            legend.append("g")
-                .attr("class", "legend-axis")
-                .attr("transform", "translate(0,20)")
-                .call(legendAxis);
+            const legendLabels = legend.selectAll("text")
+                .data(colorScale.domain())
+                .enter().append("text")
+                .attr("x", (d, i) => i * 100 + 50) 
+                .attr("y", 40)
+                .style("text-anchor", "middle")
+                .text(d => d * 100 + "%"); 
 
             setInitialValues();
 
@@ -395,3 +413,4 @@
 </body>
 
 </html>
+
