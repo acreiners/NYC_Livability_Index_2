@@ -220,7 +220,7 @@
                         .style("top", (d3.event.pageY - 30) + "px")
                         .style("display", "block")
                         .html(`Borough: ${csvRow.BoroName}<br>
-                   Neighboorhood: ${csvRow.NTAName}<br>
+                   Neighborhood: ${csvRow.NTAName}<br>
                    Overall Score: ${parseFloat(csvRow.weightedValue).toFixed(2)}<br>
                    Transit/Accessibility: ${parseFloat(100 * csvRow.transit_index).toFixed(2)}<br>
                    Restaurants: ${parseFloat(100 * csvRow.restaurant_index).toFixed(2)}<br>
@@ -401,9 +401,9 @@
                 topTenList.html("<h3>Top Ten List</h3>");
                 for (let i = 0; i < Math.min(10, filteredData.length); i++) {
                     if (trait === "weightedValue") {
-                        topTenList.append("p").html(`Borough: ${filteredData[i].BoroName}, Neighboorhood: ${filteredData[i].NTAName}, Score: ${parseFloat(filteredData[i][trait]).toFixed(2)}`);
+                        topTenList.append("p").html(`Borough: ${filteredData[i].BoroName}, Neighborhood: ${filteredData[i].NTAName}, Score: ${parseFloat(filteredData[i][trait]).toFixed(2)}`);
                     } else {
-                        topTenList.append("p").html(`Borough: ${filteredData[i].BoroName}, Neighboorhood: ${filteredData[i].NTAName}, Score: ${parseFloat(100 * filteredData[i][trait]).toFixed(2)}`);
+                        topTenList.append("p").html(`Borough: ${filteredData[i].BoroName}, Neighborhood: ${filteredData[i].NTAName}, Score: ${parseFloat(100 * filteredData[i][trait]).toFixed(2)}`);
                     }
                 }
             }
