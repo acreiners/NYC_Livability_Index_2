@@ -74,7 +74,7 @@
         <label>Restaurants <input type="range" id="restaurant_index" min="0" max="1" step="0.01"></label>
         <label>Health <input type="range" id="health_index" min="0" max="1" step="0.01"></label>
         <label>Housing <input type="range" id="housing_index" min="0" max="1" step="0.01"></label>
-        <label>Crime <input type="range" id="crime_index" min="0" max="1" step="0.01"></label>
+        <label>Safety <input type="range" id="crime_index" min="0" max="1" step="0.01"></label>
     </div>
 
     <div id="regionSelector">
@@ -94,7 +94,7 @@
             <option value="restaurant_index">Restaurants</option>
             <option value="health_index">Health</option>
             <option value="housing_index">Housing</option>
-            <option value="crime_index">Crime</option>
+            <option value="crime_index">Safety</option>
         </select>
     </div>
     <div id="container">
@@ -111,7 +111,7 @@
     Factors included in each trait is listed below. </p>
     <p> Transit: Subway Stations, Covered Bus Stops, and Public Bicycle Parking </p>
     <p> Restaurant Safety: Number of Restaurants, Violations, Closures, Health Grade </p>
-    <p> Crime: Felonies, Misdemeanors, Violations </p>
+    <p> Safety: Felonies, Misdemeanors, Violations </p>
     <p> Health: Influenza/Pneumonia Admissions, EMS Incidents, Water Inspections, Rodent Inspections </p>
     <p> Housing: Average Rent Prices, Housing Violations </p>
     <h3> Data Sources: </h3>
@@ -135,7 +135,7 @@
     <a href = "https://data.cityofnewyork.us/Transportation/Bus-Stop-Shelters/qafz-7myz"> Link </a></p>
     <p> coredata.nyc 2023. CoreData NYC - New York City’s Public Data. coredata.nyc. 
     <a href = "https://coredata.nyc/"> Link </a></p>
-    <p> New York City Open Data 2023. Crime Map Data. New York City Open Data. 
+    <p> New York City Open Data 2023. Safety Map Data. New York City Open Data. 
     <a href = "https://data.cityofnewyork.us/Public-Safety/Crime-Map-/5jvd-shfj?category=Public-Safety&view_name=Crime-Map-"> Link </a></p>
     <p> New York City Open Data 2023. DOHMH New York City Restaurant Inspection Results. New York City Open Data.
     <a href = "https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j"> Link </a></p>
@@ -226,7 +226,7 @@
                    Restaurants: ${parseFloat(100 * csvRow.restaurant_index).toFixed(2)}<br>
                    Health: ${parseFloat(100 * csvRow.health_index).toFixed(2)}<br>
                    Housing: ${parseFloat(100 * csvRow.housing_index).toFixed(2)}<br>
-                   Crime: ${parseFloat(100 * csvRow.crime_index).toFixed(2)}<br>
+                   Safety: ${parseFloat(100 * csvRow.crime_index).toFixed(2)}<br>
                    GEOID: ${csvRow.census_tract_geoid}
                    `);
                 }
