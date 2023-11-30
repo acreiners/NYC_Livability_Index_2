@@ -71,10 +71,10 @@
     <div id="controls">
         <h2>Trait Importance</h2>
         <label>Transit/Accessibility <input type="range" id="transit_index" min="0" max="1" step="0.01"></label>
-        <label>Restaurants <input type="range" id="restaurant_index" min="0" max="1" step="0.01"></label>
+        <label>Restaurant Safety <input type="range" id="restaurant_index" min="0" max="1" step="0.01"></label>
         <label>Health <input type="range" id="health_index" min="0" max="1" step="0.01"></label>
         <label>Housing <input type="range" id="housing_index" min="0" max="1" step="0.01"></label>
-        <label>Crime <input type="range" id="crime_index" min="0" max="1" step="0.01"></label>
+        <label>Safety <input type="range" id="crime_index" min="0" max="1" step="0.01"></label>
     </div>
 
     <div id="regionSelector">
@@ -91,10 +91,10 @@
         <select id="trait">
             <option value="weightedValue">Overall Score</option>
             <option value="transit_index">Transit/Accessibility</option>
-            <option value="restaurant_index">Restaurants</option>
+            <option value="restaurant_index">Restaurant Safety</option>
             <option value="health_index">Health</option>
             <option value="housing_index">Housing</option>
-            <option value="crime_index">Crime</option>
+            <option value="crime_index">Safety</option>
         </select>
     </div>
     <div id="container">
@@ -111,7 +111,7 @@
     Factors included in each trait is listed below. </p>
     <p> Transit: Subway Stations, Covered Bus Stops, and Public Bicycle Parking </p>
     <p> Restaurant Safety: Number of Restaurants, Violations, Closures, Health Grade </p>
-    <p> Crime: Felonies, Misdemeanors, Violations </p>
+    <p> Safety: Felonies, Misdemeanors, Violations </p>
     <p> Health: Influenza/Pneumonia Admissions, EMS Incidents, Water Inspections, Rodent Inspections </p>
     <p> Housing: Average Rent Prices, Housing Violations </p>
     <h3> Data Sources: </h3>
@@ -164,8 +164,8 @@
         }
 
         async function loadData() {
-            const geojsonData = await d3.json("Data/nyc_geojson.json");
-            const csvData = await d3.csv("Data/final_index.csv");
+            const geojsonData = await d3.json("nyc_geojson.json");
+            const csvData = await d3.csv("Test_Files/Final/final_index.csv");
 
             csvData.forEach(csvRow => {
                 const geoJsonFeature = geojsonData.features.find(feature => feature.properties.GEOID === csvRow.census_tract_geoid);
@@ -223,10 +223,10 @@
                    Neighborhood: ${csvRow.NTAName}<br>
                    Overall Score: ${parseFloat(csvRow.weightedValue).toFixed(2)}<br>
                    Transit/Accessibility: ${parseFloat(100 * csvRow.transit_index).toFixed(2)}<br>
-                   Restaurants: ${parseFloat(100 * csvRow.restaurant_index).toFixed(2)}<br>
+                   Restaurant Safety: ${parseFloat(100 * csvRow.restaurant_index).toFixed(2)}<br>
                    Health: ${parseFloat(100 * csvRow.health_index).toFixed(2)}<br>
                    Housing: ${parseFloat(100 * csvRow.housing_index).toFixed(2)}<br>
-                   Crime: ${parseFloat(100 * csvRow.crime_index).toFixed(2)}<br>
+                   Safety: ${parseFloat(100 * csvRow.crime_index).toFixed(2)}<br>
                    GEOID: ${csvRow.census_tract_geoid}
                    `);
                 }
