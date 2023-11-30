@@ -1,4 +1,4 @@
-census_tract_geoid,restaurant_index_bin,crime_index_bin,transit_index_bin,housing_index_bin,health_index_bin
+census_tract_geoid,restaurant_index,crime_index,transit_index,housing_index,health_index
 36005000400,0.2,0.3,0.4,0.7,0.6
 36005001901,0.7,0.3,1.0,0.4,0.3
 36005001902,0.9,0.2,0.2,0.6,0.6
